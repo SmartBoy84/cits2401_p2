@@ -12,10 +12,6 @@ class Task2(Task):
     def __init__(self, df: DataFrame) -> None:
         super().__init__(df, (self.part_i, self.part_ii))
 
-    def get_output(self):
-        """generate desired output"""
-        return (task() for task in self.tasks)
-
     def part_i(self):
         """solution for part 2.i"""
         mean_apparent_temp = self.df["Apparent Temperature (C)"].mean()

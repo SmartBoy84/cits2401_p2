@@ -23,10 +23,6 @@ class Task1(Task):
     def __init__(self, df: DataFrame):
         super().__init__(df, (self.part_i, self.part_ii, self.part_iii, self.part_iv))
 
-    def get_output(self):
-        """generate desired output"""
-        return (task() for task in self.tasks)
-
     def part_i(self) -> float:
         """solution to 1.i"""
 
@@ -147,7 +143,7 @@ class Task1(Task):
         transformed_df = standardised_df.dot(top_k_eigen_vectors)  # compute dot product
 
         # I emailed Andrei Ristea, their first value was 1.3 - I get 1.29
-        # I could implement a hacky solution for forced ceiling when at 0.5 
+        # I could implement a hacky solution for forced ceiling when at 0.5
         # to get my output to match theirs but I'm going to leave it as is
         # since this is the default python behaviour (Bankers rounding)
         return transformed_df.round(2).to_numpy()
