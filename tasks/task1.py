@@ -136,7 +136,7 @@ class Task1(Task):
         # perform eigen decomposition
 
         ## d) sort eigenvectors from highest -> lowest
-        eigen_vectors = eigen_vectors[np.argsort(eigen_values)][::-1]
+        eigen_vectors = eigen_vectors[np.argsort(-eigen_values)]
         # argsort() returns indices of sorted entries of eigen_values
         # => used to index eigen_vectors
 
@@ -146,4 +146,8 @@ class Task1(Task):
         ## f) transform df using selected eigenvectors
         transformed_df = standardised_df.dot(top_k_eigen_vectors)  # compute dot product
 
-        return transformed_df
+        # I emailed Andrei Ristea, their first value was 1.3 - I get 1.29
+        # I could implement a hacky solution for forced ceiling when at 0.5 
+        # to get my output to match theirs but I'm going to leave it as is
+        # since this is the default python behaviour (Bankers rounding)
+        return transformed_df.round(2).to_numpy()

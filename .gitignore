@@ -1,2 +1,4 @@
 /.DS_Store
 /Summary report.docx
+__pycache__/*
+tasks/__pycache__/*

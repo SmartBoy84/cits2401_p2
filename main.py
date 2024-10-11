@@ -35,18 +35,17 @@ def main(filename):
 
     # task 1
     var, median_result, corr, pca = task1(df)
-    print(pca.to_csv())
-    # print(var, median_result, corr, pca.shape, pca[:5])
+    print(var, median_result, corr, pca.shape, pca[:5])
 
     # task 2
     df = df.apply(pd.to_numeric, errors="coerce")  # replace non-ints with NaNs
     task2i, task2ii = task2(df)
-    print(task2i, task2ii)
+    # print(task2i, task2ii)
 
     # task 3
     (task3i,) = task3(df)  # (task3,) needed to exhaust returned generator
-    print(task3i[0][0], task3i[1][0])
-    print(multivariate())
+    # print(task3i[0][0], task3i[1][0])
+    # print(multivariate())
 
     # task 4
     task4(df, pca)

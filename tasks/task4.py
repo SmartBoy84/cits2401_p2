@@ -1,6 +1,7 @@
 """ solutions for task 4"""
 
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import numpy as np
 from pandas import DataFrame
 
@@ -43,6 +44,9 @@ class Task4(Task):
     ## Global configuration
     GENERAL_COLOR = (1, 179 / 255, 64 / 255)
     # https://matplotlib.org/stable/users/explain/colors/colors.html#colors-def
+
+    # viridis is a color map - specifically designed to improve readability
+    CMAP = plt.get_cmap("viridis")
 
     SINGLE_SCREEN_SIZE = (14, 6.8)  # figsize for when single figure plot (plot_all)
 
@@ -153,7 +157,7 @@ class Task4(Task):
                 radius=0.8,
                 # pyplot has weird spacing calculation formule, easiest to hardcode
             )
-            
+
         ax.set_anchor(self.PIE_ANCHOR)
 
         plt.setp(autopct, fontweight="bold", fontsize=9)
@@ -254,35 +258,15 @@ class Task4(Task):
         # note; I did histogram instead of bar plot as bar plot conveys no information
         # for continuous scales (CONFIRM WITH LECTURER!)
 
-        ## my colour code algorithm:
-        # correspond wind_speed to pca value using index
-        # filter out wind speeds below 8
-        # for each range of the histogram, sum the pca values
-        # determine the proportion of some given pca value to the max in the set
-        # using the absolute value of this proportion multiply it by each component of
-        # the chosen rgb colour to set its brightness
-        # voila! you have a colour based of pca values
+        ## my personal colour code algorithm:
+        # sum the pca values for all the wind speeds included under a given histogram bar
+        # normal the pca value array and map it to the chosen (viridis) color map
 
-        # dear marker (it's 3:30 in the morning), I'm really not sure
-        # how else I could interpret the marking key...
+        filtered_indices = self.df["Wind Speed (km/h)"] > 8
+        wind_speeds = self.df[filtered_indices]["Wind Speed (km/h)"]
 
-        wind_speeds = self.df[self.df["Wind Speed (km/h)"] > 8]["Wind Speed (km/h)"]
         bin_n = 20
         bin_edges = np.linspace(min(wind_speeds), max(wind_speeds), bin_n)
-
-        # get pca sums for each bar
-        pca_vals = [
-            float(
-                self.pca[
-                    wind_speeds[
-                        wind_speeds.between(
-                            bin_edges[i], bin_edges[i + 1], inclusive="right"
-                        )
-                    ].index
-                ].sum()
-            )  # here is the trick (refer to explanation above)
-            for i in range(len(bin_edges) - 1)
-        ]
 
         if ax is None:
             plt.figure(figsize=self.GRAPH_SIZE)
@@ -295,17 +279,27 @@ class Task4(Task):
             edgecolor="black",
         )
 
-        for i, patch in enumerate(patches):
-            patch.set_facecolor(
-                [
-                    (
-                        (col * ((1 - (abs(pca_vals[i]) / max(pca_vals)))))
-                        if pca_vals[i] != max(pca_vals)
-                        else col
-                    )
-                    for col in self.GENERAL_COLOR
-                ]
-            )
+        # set histogram patch colors
+        pca_vals = self.pca[filtered_indices]
+
+        # get pca sums for each bar
+        patch_pca = [
+            pca_vals[wind_speeds.between(bin_edges[i], bin_edges[i + 1])].sum()
+            for i in range(bin_n - 1)
+        ]
+
+        # normalising it increases coherence of output colors - makes sure they are related in some way
+        norm = plt.Normalize(min(patch_pca), max(patch_pca))
+        colors = [mcolors.to_hex(self.CMAP(norm(value))) for value in patch_pca]
+
+        for patch, color in zip(patches, colors):
+            patch.set_facecolor(color)
+
+        # marker: here is my barplot implementation - to me, it seems to convey no info so I've foregone it
+        # norm = plt.Normalize(min(self.pca), max(self.pca))
+        # colors = [mcolors.to_hex(self.CMAP(norm(value))) for value in self.pca]
+
+        # ax.bar(wind_speeds.index, wind_speeds, color = colors)
 
         ax.set_title("Histogram of Wind Speeds (km/h) > 8")
 
