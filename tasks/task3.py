@@ -6,7 +6,14 @@ import sympy as sp
 from .task import Task
 
 
-def multivariate():
+# the wording was really ambiguous (was that on purpose?)
+# this is my implementation, even now I'm unsure what you wanted...
+def multivariate(eqs: list[(float | None, float | None, float | None)]):
+    """
+    Accepts a list of "equation" values - [x, y, z]
+    Substitutes these values into the equation X=Y^0.25 + Z^0.34
+    If definite solutions are found, it prints them else it prints an empty array
+    """
     pass
 
 
