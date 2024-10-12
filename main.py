@@ -35,12 +35,12 @@ def main(filename):
 
     # task 1
     var, median_result, corr, pca = task1(df)
-    # print(var, median_result, corr, pca.shape, pca[:5])
+    print(var, median_result, corr, pca.shape, pca[:5])
 
     # task 2
     df = df.apply(pd.to_numeric, errors="coerce")  # replace non-ints with NaNs
     task2i, task2ii = task2(df)
-    # print(task2i[:4], task2ii)
+    print(task2i[:4], task2ii)
 
     # task 3
     (task3i,) = task3(df)  # (task3,) needed to exhaust returned generator
@@ -49,6 +49,7 @@ def main(filename):
 
     # task 4
     # task4(df, pca)
+    multivariate()
 
 
 main("data/weather_data.csv")

@@ -7,14 +7,23 @@ from .task import Task
 
 
 # the wording was really ambiguous (was that on purpose?)
-# this is my implementation, even now I'm unsure what you wanted...
-def multivariate(eqs: list[(float | None, float | None, float | None)]):
-    """
-    Accepts a list of "equation" values - [x, y, z]
-    Substitutes these values into the equation X=Y^0.25 + Z^0.34
-    If definite solutions are found, it prints them else it prints an empty array
-    """
-    pass
+def multivariate():
+    """ solve sle x = y^0.25 + z^0.34"""
+    # Define Y and Z as symbols
+    y, z = sp.symbols("Y Z")
+
+    # create expression
+    x = y**0.25 + z**0.34
+
+    # differentiate w.r.t x and y
+    dx_dy = sp.diff(x, y)
+    dx_dz = sp.diff(x, z)
+
+    # try to solve sle dx/dy = 0 and dx/dz = 0
+    # the fact that we had to do this was clarified by andrei ristea
+    solutions = sp.solve([dx_dy, dx_dz], (y, z))
+
+    print(solutions)
 
 
 class Task3(Task):
