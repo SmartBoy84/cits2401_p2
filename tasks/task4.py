@@ -126,7 +126,7 @@ class Task4(Task):
     def part_ii(self, ax=None):
         """part ii"""
 
-        no_rain_entries = self.df[self.df["Rain"] == "Yes"]
+        no_rain_entries = self.df[self.df["Rain"] == "No"]
         summary_groups = no_rain_entries.groupby("Summary")
 
         temp_sums = summary_groups["Temperature (C)"].sum()
@@ -296,7 +296,8 @@ class Task4(Task):
         # norm = plt.Normalize(min(self.pca), max(self.pca))
         # colors = [mcolors.to_hex(self.CMAP(norm(value))) for value in self.pca]
 
-        # ax.bar(wind_speeds.index, wind_speeds, color = colors)
+        # ax.bar(wind_speeds.index, wind_speeds)
+        # print(wind_speeds.sort_values())
 
         ax.set_title("Histogram of Wind Speeds (km/h) > 8")
 

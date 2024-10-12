@@ -397,7 +397,7 @@ class Task4(Task):
     def part_ii(self, ax=None):
         """part ii"""
 
-        no_rain_entries = self.df[self.df["Rain"] == "Yes"]
+        no_rain_entries = self.df[self.df["Rain"] == "No"]
         summary_groups = no_rain_entries.groupby("Summary")
 
         temp_sums = summary_groups["Temperature (C)"].sum()
