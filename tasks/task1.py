@@ -5,20 +5,19 @@ from pandas import DataFrame
 
 from .task import Task
 
-summary_mapping = {
-    "Partly Cloudy": 1,
-    "Mostly Cloudy": 2,
-    "Overcast": 3,
-    "Foggy": 4,
-    "Clear": 5,
-    "Breezy and Mostly Cloudy": 6,
-}
-
-rain_mapping = {"Yes": 1, "No": 2}
-
-
 class Task1(Task):
     """task 1"""
+
+    SUMMARY_MAP = {
+        "Partly Cloudy": 1,
+        "Mostly Cloudy": 2,
+        "Overcast": 3,
+        "Foggy": 4,
+        "Clear": 5,
+        "Breezy and Mostly Cloudy": 6,
+    }
+
+    RAIN_MAP = {"Yes": 1, "No": 2}
 
     def __init__(self, df: DataFrame):
         super().__init__(df, (self.part_i, self.part_ii, self.part_iii, self.part_iv))
@@ -102,11 +101,11 @@ class Task1(Task):
 
         # summary mapping - done after matrix creation to preserve original DataFrame
         self.df["Summary"] = self.df["Summary"].map(
-            summary_mapping
+            self.SUMMARY_MAP
         )  # map can also take a function - this is just an explicit mapping
 
         # rain status mapping
-        self.df["Rain"] = self.df["Rain"].map(rain_mapping)
+        self.df["Rain"] = self.df["Rain"].map(self.RAIN_MAP)
 
         ## 1- extract the relevant columns, in the relevant order
         extracted_df = self.df[

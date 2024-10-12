@@ -3,7 +3,7 @@
 from pandas import DataFrame
 
 from .task import Task
-from .task1 import rain_mapping
+from .task1 import Task1 
 
 
 class Task2(Task):
@@ -18,7 +18,7 @@ class Task2(Task):
 
         # filter entires for which rain is yes and temp is less than mean apparent temp
         filtered_df = self.df[
-            (self.df["Rain"] == rain_mapping["Yes"])  # from part 1.iv ...
+            (self.df["Rain"] == Task1.RAIN_MAP["Yes"])  # from part 1.iv ...
             & (self.df["Temperature (C)"] < mean_apparent_temp)
         ]["Temperature (C)"]
 

@@ -44,12 +44,17 @@ def main(filename):
 
     # task 3
     (task3i,) = task3(df)  # (task3,) needed to exhaust returned generator
-    # print(task3i[0][0], task3i[1][0])
-    # print(multivariate())
+    print(task3i[0][0], task3i[1][0])
 
-    # task 4
-    # task4(df, pca)
-    multivariate()
+    return (var, median_result, corr, pca, task2i, task2ii, task3i)
 
 
-main("data/weather_data.csv")
+fileName = "data/weather_data.csv"
+
+_, _, _, pca, _, _, _ = main(fileName)
+
+multivariate()
+
+# task 4
+task4(pd.read_csv(fileName), pca)
+# note task 4 has to take the original dataframe

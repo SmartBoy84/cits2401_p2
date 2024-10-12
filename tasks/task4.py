@@ -6,11 +6,6 @@ import numpy as np
 from pandas import DataFrame
 
 from .task import Task
-from .task1 import summary_mapping, rain_mapping
-
-# this is needed to remap summaries to their string values (after 1.iv...)
-invert_summary_mapping = {k: v for (v, k) in summary_mapping.items()}
-# FIXME - this is very unsatisfying
 
 
 class Task4(Task):
@@ -131,10 +126,12 @@ class Task4(Task):
     def part_ii(self, ax=None):
         """part ii"""
 
-        no_rain_entries = self.df[self.df["Rain"] == rain_mapping["Yes"]]
-        summary_group = no_rain_entries.groupby("Summary")["Temperature (C)"].sum()
+        no_rain_entries = self.df[self.df["Rain"] == "Yes"]
+        summary_groups = no_rain_entries.groupby("Summary")
 
-        labels = summary_group.index.map(invert_summary_mapping)
+        temp_sums = summary_groups["Temperature (C)"].sum()
+
+        labels = temp_sums.index
 
         if ax is None:
             plt.figure(figsize=self.PIECHART_SIZE)
@@ -142,18 +139,18 @@ class Task4(Task):
 
         if self.one_screen_display:
             free_spaces, _, autopct = ax.pie(
-                summary_group,
+                temp_sums,
                 autopct="%.1f%%",  # display wedge size
-                explode=[0.04] * len(summary_group),
+                explode=[0.04] * len(temp_sums),
                 radius=self.PIE_RADIUS,
                 # pyplot has weird spacing calculation formule, easiest to hardcode
             )
         else:
             free_spaces, _, autopct = ax.pie(
-                summary_group,
+                temp_sums,
                 labels=labels,
                 autopct="%.1f%%",  # display wedge size
-                explode=[0.03] * len(summary_group),
+                explode=[0.03] * len(temp_sums),
                 radius=0.8,
                 # pyplot has weird spacing calculation formule, easiest to hardcode
             )
@@ -184,11 +181,11 @@ class Task4(Task):
         # long adieu later... turns out groupby() returns some intermediate structure
         # to which an aggregator function has to be applied
 
+        labels = humidities.index
+
         if ax is None:
             plt.figure(figsize=self.GRAPH_SIZE)
             ax = plt.gca()
-
-        labels = humidities.index.map(invert_summary_mapping)
 
         # I really don't want to rotate 90 degrees
         # so I'm going to add new line to fit labels
