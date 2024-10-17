@@ -624,7 +624,7 @@ fileName = "data/weather_data.csv"
 
 var, medianResult, corr, pca, task2i, task2ii, task3i = main(fileName)
 
-# task4(pd.read_csv(fileName), pca)
+task4(pd.read_csv(fileName), pca)
 
 # multivariate()
 
